@@ -1,0 +1,10 @@
+# すべて無視
+*
+# .gitignore と README（トップページ）は追跡
+!.gitignore
+!README.md
+# docs/others/research-os のみ追跡（親ディレクトリも許可が必要）
+!docs/
+!docs/others/
+!docs/others/research-os/
+!docs/others/research-os/**
