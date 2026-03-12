@@ -1,0 +1,665 @@
+project:
+  id: iTenFs
+  name: iTenFs
+  description: 編集データの非破壊管理、永続化、表示、エクスポート対応
+  version: 1
+
+status_enum:
+  - todo
+  - doing
+  - blocked
+  - review
+  - done
+
+priority_enum:
+  - high
+  - medium
+  - low
+
+type_enum:
+  - epic
+  - task
+  - review
+
+wbs:
+  - id: PR2
+    name: UI層の編集データ対応
+    type: epic
+    summary: UIレイヤーで編集データを扱えるようにし、フォーム画面から編集結果を受け渡せる基盤を作る。
+    phase: PR2
+    priority: high
+    estimate_days: 7.5
+    owner: yusuke
+    status: done
+    depends_on: []
+    definition_of_done:
+      - ImageEditorView が編集データを返却できる
+      - PhotoFormView / SpotFormView / GroupFormView で編集データを扱える
+      - 既存の画面フローを壊していない
+    deliverables:
+      - UI層での編集データ受け渡し基盤
+    risks:
+      - フォーム間で編集データの扱いが不統一になる可能性
+    notes:
+      - UI層での責務整理が重要
+    links: []
+    children:
+      - id: PR2-C1
+        name: ImageEditorViewのAPIをEditingData返却型に変更
+        type: task
+        summary: ImageEditorView が編集結果を構造化データとして返せるように API を変更する。
+        phase: PR2
+        priority: high
+        estimate_days: 1.5
+        owner: yusuke
+        status: done
+        depends_on: []
+        definition_of_done:
+          - ImageEditorView が EditingData を返却できる
+          - 呼び出し側が新 API に追従している
+          - コンパイルエラーが解消されている
+        deliverables:
+          - EditingData返却型API
+        risks:
+          - 呼び出し側の破壊的変更
+        notes: []
+        links: []
+
+      - id: PR2-C2
+        name: PhotoForm系の変更リセット機能対応
+        type: task
+        summary: PhotoForm 系画面で編集変更をリセットできるようにし、編集体験を安定化する。
+        phase: PR2
+        priority: medium
+        estimate_days: 1.0
+        owner: yusuke
+        status: done
+        depends_on:
+          - PR2-C1
+        definition_of_done:
+          - リセット操作で編集状態を初期化できる
+          - UI上から期待通りに呼び出せる
+        deliverables:
+          - リセット機能
+        risks:
+          - 初期状態の定義が曖昧になる可能性
+        notes: []
+        links: []
+
+      - id: PR2-C3
+        name: PhotoFormViewで編集データを保持
+        type: task
+        summary: PhotoFormView 内で編集データを状態として保持し、後続処理へ受け渡せるようにする。
+        phase: PR2
+        priority: high
+        estimate_days: 1.5
+        owner: yusuke
+        status: done
+        depends_on:
+          - PR2-C1
+        definition_of_done:
+          - PhotoFormView が編集データを保持できる
+          - 画面遷移や再描画で破綻しない
+        deliverables:
+          - PhotoFormViewでの編集データ保持
+        risks:
+          - State管理の複雑化
+        notes: []
+        links: []
+
+      - id: PR2-C4
+        name: SpotFormViewで編集データを動的に取得
+        type: task
+        summary: SpotFormView 側で編集データを受け取り、必要なタイミングで参照できるようにする。
+        phase: PR2
+        priority: high
+        estimate_days: 1.5
+        owner: yusuke
+        status: done
+        depends_on:
+          - PR2-C3
+        definition_of_done:
+          - SpotFormView で編集データを取得できる
+          - 取得タイミングが不整合を起こさない
+        deliverables:
+          - SpotFormViewの編集データ取得処理
+        risks:
+          - 表示状態との整合性崩れ
+        notes: []
+        links: []
+
+      - id: PR2-C5
+        name: GroupFormView対応（ベース画像編集）
+        type: task
+        summary: GroupFormView でもベース画像の編集データを扱えるようにし、画面間で機能差を減らす。
+        phase: PR2
+        priority: medium
+        estimate_days: 1.0
+        owner: yusuke
+        status: done
+        depends_on:
+          - PR2-C1
+        definition_of_done:
+          - GroupFormView でベース画像編集データを扱える
+          - 既存のGroup編集フローを壊していない
+        deliverables:
+          - GroupFormView対応
+        risks:
+          - Group固有のデータフローとの差異
+        notes: []
+        links: []
+
+      - id: PR2-REVIEW
+        name: レビュー指摘事項対応
+        type: review
+        summary: PR2 のレビュー結果を反映し、設計・実装の不整合を解消する。
+        phase: PR2
+        priority: medium
+        estimate_days: 1.0
+        owner: yusuke
+        status: done
+        depends_on:
+          - PR2-C1
+          - PR2-C2
+          - PR2-C3
+          - PR2-C4
+          - PR2-C5
+        definition_of_done:
+          - レビュー指摘が反映されている
+          - 再レビュー可能な状態になっている
+        deliverables:
+          - レビュー反映済みPR2
+        risks: []
+        notes: []
+        links: []
+
+  - id: PR3
+    name: データフローと永続化
+    type: epic
+    summary: 編集データをデータモデルへ保存し、再読み込み・復元できる永続化基盤を構築する。
+    phase: PR3
+    priority: high
+    estimate_days: 10.5
+    owner: yusuke
+    status: done
+    depends_on:
+      - PR2
+    definition_of_done:
+      - 編集データが永続化される
+      - 既存データとの整合性が保たれる
+      - 再起動後も復元できる
+      - 必要なテストが追加されている
+    deliverables:
+      - 永続化対応一式
+    risks:
+      - 既存データとの互換性問題
+      - 保存先ごとの責務分散
+    notes:
+      - 非破壊編集データの読み書き設計が中核
+    links: []
+    children:
+      - id: PR3-C1
+        name: PhotoFormViewからPhotoImageへの編集データ保存
+        type: task
+        summary: PhotoFormView で保持した編集データを PhotoImage に保存できるようにする。
+        phase: PR3
+        priority: high
+        estimate_days: 1.5
+        owner: yusuke
+        status: done
+        depends_on:
+          - PR2-C3
+        definition_of_done:
+          - PhotoImage に編集データを保存できる
+          - 保存後にデータ欠落がない
+        deliverables:
+          - PhotoImage保存処理
+        risks: []
+        notes: []
+        links: []
+
+      - id: PR3-C2
+        name: SpotFormViewからPhotoOnMapへの編集データ保存
+        type: task
+        summary: SpotFormView 経由で PhotoOnMap に必要な編集データを保存できるようにする。
+        phase: PR3
+        priority: high
+        estimate_days: 1.5
+        owner: yusuke
+        status: done
+        depends_on:
+          - PR2-C4
+          - PR3-C1
+        definition_of_done:
+          - PhotoOnMap 側で編集データ保存が成立する
+          - Spot保存フローを壊していない
+        deliverables:
+          - PhotoOnMap保存処理
+        risks: []
+        notes: []
+        links: []
+
+      - id: PR3-C3
+        name: GroupFormViewからGroupへの編集データ保存
+        type: task
+        summary: Group ベース画像編集に関するデータを Group 側へ永続化できるようにする。
+        phase: PR3
+        priority: medium
+        estimate_days: 1.0
+        owner: yusuke
+        status: done
+        depends_on:
+          - PR2-C5
+        definition_of_done:
+          - Group関連の編集データが保存される
+          - Group再表示時に利用可能である
+        deliverables:
+          - Group保存処理
+        risks: []
+        notes: []
+        links: []
+
+      - id: PR3-C4
+        name: 既存データのマイグレーション対応
+        type: task
+        summary: 既存データを新しい編集データ構造へ安全に移行できるようにする。
+        phase: PR3
+        priority: high
+        estimate_days: 1.0
+        owner: yusuke
+        status: done
+        depends_on:
+          - PR3-C1
+          - PR3-C2
+          - PR3-C3
+        definition_of_done:
+          - 既存データでクラッシュしない
+          - 互換性維持方針が反映されている
+        deliverables:
+          - マイグレーション対応
+        risks:
+          - 旧データ読み込み失敗
+        notes: []
+        links: []
+
+      - id: PR3-C5
+        name: 編集データの読み込み・復元処理
+        type: task
+        summary: 保存済み編集データを読み込み、再編集や表示に使える状態で復元する。
+        phase: PR3
+        priority: high
+        estimate_days: 1.5
+        owner: yusuke
+        status: done
+        depends_on:
+          - PR3-C1
+          - PR3-C2
+          - PR3-C3
+          - PR3-C4
+        definition_of_done:
+          - 保存済み編集データが復元できる
+          - 再編集フローが成立する
+        deliverables:
+          - 読み込み・復元処理
+        risks:
+          - 保存形式と復元形式の不一致
+        notes: []
+        links: []
+
+      - id: PR3-C6
+        name: エラーハンドリング強化
+        type: task
+        summary: 編集データ保存・復元まわりの異常系を吸収し、クラッシュや不整合を減らす。
+        phase: PR3
+        priority: medium
+        estimate_days: 1.0
+        owner: yusuke
+        status: done
+        depends_on:
+          - PR3-C5
+        definition_of_done:
+          - 想定異常系で致命的クラッシュしない
+          - 失敗時の扱いが整理されている
+        deliverables:
+          - 強化されたエラーハンドリング
+        risks: []
+        notes: []
+        links: []
+
+      - id: PR3-C7
+        name: 単体テスト追加
+        type: task
+        summary: 編集データの保存・復元・整合性に関する単体テストを追加する。
+        phase: PR3
+        priority: high
+        estimate_days: 2.0
+        owner: yusuke
+        status: done
+        depends_on:
+          - PR3-C5
+          - PR3-C6
+        definition_of_done:
+          - 主要保存復元パターンに対するテストがある
+          - 既存ケースとの回帰確認ができる
+        deliverables:
+          - 単体テスト
+        risks:
+          - 異常系カバレッジ不足
+        notes: []
+        links: []
+
+      - id: PR3-REVIEW
+        name: レビュー指摘事項対応
+        type: review
+        summary: PR3 のレビュー結果を反映し、永続化設計や実装の不整合を解消する。
+        phase: PR3
+        priority: medium
+        estimate_days: 1.0
+        owner: yusuke
+        status: done
+        depends_on:
+          - PR3-C1
+          - PR3-C2
+          - PR3-C3
+          - PR3-C4
+          - PR3-C5
+          - PR3-C6
+          - PR3-C7
+        definition_of_done:
+          - レビュー指摘が反映されている
+          - 再レビュー可能な状態になっている
+        deliverables:
+          - レビュー反映済みPR3
+        risks: []
+        notes: []
+        links: []
+
+  - id: PR4
+    name: 表示対応（サムネイル・一覧表示）
+    type: epic
+    summary: 編集済み画像を一覧画面やサムネイルに反映し、ユーザーが編集結果を視認できる状態を作る。
+    phase: PR4
+    priority: high
+    estimate_days: 8.5
+    owner: yusuke
+    status: doing
+    depends_on:
+      - PR3
+    definition_of_done:
+      - 編集済み画像が一覧表示へ反映される
+      - サムネイル生成が安定している
+      - 表示性能が許容範囲に収まる
+      - 必要なテストが追加されている
+    deliverables:
+      - 表示対応一式
+    risks:
+      - 大量画像時のパフォーマンス低下
+      - キャッシュ整合性問題
+    notes:
+      - 表示は永続化済み編集データを前提に構築する
+    links: []
+    children:
+      - id: PR4-C1
+        name: サムネイル生成ロジックの実装
+        type: task
+        summary: 編集済み画像から表示用サムネイルを生成するロジックを実装する。
+        phase: PR4
+        priority: high
+        estimate_days: 2.0
+        owner: yusuke
+        status: doing
+        depends_on:
+          - PR3-C5
+        definition_of_done:
+          - 編集済み画像からサムネイル生成できる
+          - 一覧表示側で利用できる
+          - 既存データでクラッシュしない
+        deliverables:
+          - サムネイル生成ロジック
+        risks:
+          - 大量画像時に処理が重くなる可能性
+        notes:
+          - キャッシュ方式との整合が必要
+        links: []
+
+      - id: PR4-C2
+        name: 一覧表示での編集済み画像表示
+        type: task
+        summary: 一覧画面で編集済み画像の見た目が反映されるよう表示処理を調整する。
+        phase: PR4
+        priority: high
+        estimate_days: 1.5
+        owner: yusuke
+        status: todo
+        depends_on:
+          - PR4-C1
+        definition_of_done:
+          - 一覧で編集済み画像が反映される
+          - 既存の一覧表示を壊していない
+        deliverables:
+          - 一覧表示対応
+        risks: []
+        notes: []
+        links: []
+
+      - id: PR4-C3
+        name: キャッシュ機構の実装
+        type: task
+        summary: サムネイルや表示用画像の再生成コストを下げるためにキャッシュ機構を導入する。
+        phase: PR4
+        priority: medium
+        estimate_days: 1.5
+        owner: yusuke
+        status: todo
+        depends_on:
+          - PR4-C1
+        definition_of_done:
+          - キャッシュが導入されている
+          - 表示内容とキャッシュの整合が保たれる
+        deliverables:
+          - キャッシュ機構
+        risks:
+          - 古いキャッシュ表示
+        notes: []
+        links: []
+
+      - id: PR4-C4
+        name: パフォーマンス最適化
+        type: task
+        summary: 表示やサムネイル生成に伴う負荷を評価し、必要な最適化を行う。
+        phase: PR4
+        priority: medium
+        estimate_days: 1.0
+        owner: yusuke
+        status: todo
+        depends_on:
+          - PR4-C2
+          - PR4-C3
+        definition_of_done:
+          - ボトルネックが把握されている
+          - 主要ケースで体感上問題ない表示性能になっている
+        deliverables:
+          - 最適化対応
+        risks:
+          - 根本原因の見誤り
+        notes: []
+        links: []
+
+      - id: PR4-C5
+        name: 表示関連の単体テスト追加
+        type: task
+        summary: 表示対応やサムネイル関連の挙動を保証するための単体テストを追加する。
+        phase: PR4
+        priority: medium
+        estimate_days: 1.5
+        owner: yusuke
+        status: todo
+        depends_on:
+          - PR4-C2
+          - PR4-C3
+          - PR4-C4
+        definition_of_done:
+          - 主要表示フローのテストが追加されている
+          - 回帰検知が可能になっている
+        deliverables:
+          - 表示関連テスト
+        risks: []
+        notes: []
+        links: []
+
+      - id: PR4-REVIEW
+        name: レビュー指摘事項対応
+        type: review
+        summary: PR4 のレビュー結果を反映し、表示まわりの設計・実装の粗さを修正する。
+        phase: PR4
+        priority: medium
+        estimate_days: 1.0
+        owner: yusuke
+        status: todo
+        depends_on:
+          - PR4-C1
+          - PR4-C2
+          - PR4-C3
+          - PR4-C4
+          - PR4-C5
+        definition_of_done:
+          - レビュー指摘が反映されている
+          - 再レビュー可能な状態になっている
+        deliverables:
+          - レビュー反映済みPR4
+        risks: []
+        notes: []
+        links: []
+
+  - id: PR5
+    name: エクスポート対応（CSV・ZIP）
+    type: epic
+    summary: 編集情報を外部出力へ反映し、CSV や ZIP へのエクスポート機能へ統合する。
+    phase: PR5
+    priority: medium
+    estimate_days: 8.0
+    owner: yusuke
+    status: todo
+    depends_on:
+      - PR4
+    definition_of_done:
+      - CSVエクスポートに編集情報が反映される
+      - ZIPエクスポートに必要な画像が含まれる
+      - エクスポートデータの整合性が保たれる
+      - 必要なテストが追加されている
+    deliverables:
+      - エクスポート対応一式
+    risks:
+      - 出力仕様のあいまいさ
+      - 画像生成物との整合性
+    notes:
+      - 表示対応完了後の設計確定が望ましい
+    links: []
+    children:
+      - id: PR5-C1
+        name: CSVエクスポートに編集情報追加
+        type: task
+        summary: CSV 出力へ編集情報を含め、外部利用時に必要な情報を欠落させないようにする。
+        phase: PR5
+        priority: medium
+        estimate_days: 1.5
+        owner: yusuke
+        status: todo
+        depends_on:
+          - PR4
+        definition_of_done:
+          - CSVに必要な編集情報が出力される
+          - 既存CSV利用フローを壊していない
+        deliverables:
+          - CSV出力拡張
+        risks:
+          - 出力項目定義の不足
+        notes: []
+        links: []
+
+      - id: PR5-C2
+        name: ZIPエクスポートに編集済み画像を含める
+        type: task
+        summary: ZIP 出力に編集済み画像を含め、利用者が編集反映後の成果物を取得できるようにする。
+        phase: PR5
+        priority: high
+        estimate_days: 2.0
+        owner: yusuke
+        status: todo
+        depends_on:
+          - PR4-C1
+          - PR4-C2
+        definition_of_done:
+          - ZIPに編集済み画像が含まれる
+          - 出力物の内容が期待通りである
+        deliverables:
+          - ZIP出力拡張
+        risks:
+          - 元画像と編集済み画像の取り違え
+        notes: []
+        links: []
+
+      - id: PR5-C3
+        name: エクスポート時の編集データ処理
+        type: task
+        summary: エクスポート時に必要な編集データの解釈・変換処理を整理し、出力処理へ組み込む。
+        phase: PR5
+        priority: high
+        estimate_days: 1.5
+        owner: yusuke
+        status: todo
+        depends_on:
+          - PR5-C1
+          - PR5-C2
+        definition_of_done:
+          - エクスポート用の編集データ処理が実装されている
+          - 出力処理との整合が取れている
+        deliverables:
+          - 編集データ処理ロジック
+        risks:
+          - 表示ロジックとの責務混在
+        notes: []
+        links: []
+
+      - id: PR5-C4
+        name: 単体テスト追加
+        type: task
+        summary: CSV / ZIP エクスポートの主要パターンを保証する単体テストを追加する。
+        phase: PR5
+        priority: medium
+        estimate_days: 2.0
+        owner: yusuke
+        status: todo
+        depends_on:
+          - PR5-C3
+        definition_of_done:
+          - 主要エクスポートフローにテストがある
+          - 回帰確認が可能になっている
+        deliverables:
+          - エクスポート関連テスト
+        risks: []
+        notes: []
+        links: []
+
+      - id: PR5-REVIEW
+        name: レビュー指摘事項対応
+        type: review
+        summary: PR5 のレビュー結果を反映し、出力仕様や実装の不整合を修正する。
+        phase: PR5
+        priority: medium
+        estimate_days: 1.0
+        owner: yusuke
+        status: todo
+        depends_on:
+          - PR5-C1
+          - PR5-C2
+          - PR5-C3
+          - PR5-C4
+        definition_of_done:
+          - レビュー指摘が反映されている
+          - 再レビュー可能な状態になっている
+        deliverables:
+          - レビュー反映済みPR5
+        risks: []
+        notes: []
+        links: []

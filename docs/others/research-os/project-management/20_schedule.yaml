@@ -1,0 +1,109 @@
+schedule:
+
+  - id: PR2
+    planned_start: 2026-02-03
+    planned_end: 2026-02-12
+    planned_duration_days: 7.5
+    actual_start: 2026-02-03
+    actual_end: 2026-02-27
+    status: done
+    progress: 100
+    owner: yusuke
+    updated_at: 2026-02-27
+    notes: PRレビュー対応含め予定より長期化
+
+  - id: PR3
+    planned_start: 2026-02-18
+    planned_end: 2026-03-16
+    planned_duration_days: 10.5
+    actual_start: 2026-03-03
+    actual_end: 2026-03-06
+    status: done
+    progress: 100
+    owner: yusuke
+    updated_at: 2026-03-06
+    notes: 実装集中により短期間で完了
+
+  - id: PR4
+    planned_start: 2026-03-03
+    planned_end: 2026-03-31
+    planned_duration_days: 8.5
+    actual_start: 2026-03-10
+    actual_end: null
+    status: doing
+    progress: 30
+    owner: yusuke
+    updated_at: 2026-03-11
+    notes: 表示対応フェーズ
+
+  - id: PR4-C1
+    planned_start: 2026-03-10
+    planned_end: 2026-03-12
+    planned_duration_days: 2.0
+    actual_start: 2026-03-10
+    actual_end: null
+    status: doing
+    progress: 40
+    owner: yusuke
+    updated_at: 2026-03-11
+    notes: サムネイル生成ロジック実装中
+
+  - id: PR4-C2
+    planned_start: 2026-03-12
+    planned_end: 2026-03-14
+    planned_duration_days: 1.5
+    actual_start: null
+    actual_end: null
+    status: todo
+    progress: 0
+    owner: yusuke
+    updated_at: 2026-03-11
+    notes: 一覧表示反映
+
+  - id: PR4-C3
+    planned_start: 2026-03-14
+    planned_end: 2026-03-16
+    planned_duration_days: 1.5
+    actual_start: null
+    actual_end: null
+    status: todo
+    progress: 0
+    owner: yusuke
+    updated_at: 2026-03-11
+    notes: キャッシュ機構
+
+  - id: PR4-C4
+    planned_start: 2026-03-16
+    planned_end: 2026-03-18
+    planned_duration_days: 1.0
+    actual_start: null
+    actual_end: null
+    status: todo
+    progress: 0
+    owner: yusuke
+    updated_at: 2026-03-11
+    notes: パフォーマンス最適化
+
+  - id: PR4-C5
+    planned_start: 2026-03-18
+    planned_end: 2026-03-21
+    planned_duration_days: 1.5
+    actual_start: null
+    actual_end: null
+    status: todo
+    progress: 0
+    owner: yusuke
+    updated_at: 2026-03-11
+    notes: 表示関連テスト
+
+  - id: PR5
+    planned_start: 2026-03-24
+    planned_end: 2026-04-09
+    planned_duration_days: 8.0
+    actual_start: null
+    actual_end: null
+    status: todo
+    progress: 0
+    owner: yusuke
+    updated_at: 2026-03-11
+    notes: エクスポート対応フェーズ

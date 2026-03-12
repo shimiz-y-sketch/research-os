@@ -1,0 +1,196 @@
+progress_log:
+  - date: 2026-02-03
+    task_id: PR2-C1
+    status: done
+    summary: ImageEditorViewのAPIをEditingData返却型へ変更した。
+    completed:
+      - ImageEditorViewが編集結果を構造化データで返却できるようになった
+      - 呼び出し側の基本追従を実施した
+    blockers: []
+    next_actions:
+      - PhotoForm系の変更追従を進める
+    notes:
+      - 呼び出し側への影響範囲確認が必要
+
+  - date: 2026-02-04
+    task_id: PR2-C2
+    status: done
+    summary: PhotoForm系の変更リセット機能を実装した。
+    completed:
+      - 編集状態を初期化する処理を追加した
+      - UIからリセット可能にした
+    blockers: []
+    next_actions:
+      - PhotoFormViewで編集データ保持に進む
+    notes: []
+
+  - date: 2026-02-05
+    task_id: PR2-C3
+    status: done
+    summary: PhotoFormViewで編集データを保持できるようにした。
+    completed:
+      - 編集データをView状態として持てるようにした
+      - 後続処理に受け渡す経路を整理した
+    blockers: []
+    next_actions:
+      - SpotFormView側の取得処理へ進む
+    notes:
+      - 再描画時の保持挙動は引き続き確認が必要
+
+  - date: 2026-02-06
+    task_id: PR2-C4
+    status: done
+    summary: SpotFormViewで編集データを動的に取得できるようにした。
+    completed:
+      - SpotFormViewで編集データを参照できるようにした
+      - 取得タイミングの基本フローを確認した
+    blockers: []
+    next_actions:
+      - GroupFormView対応に進む
+    notes: []
+
+  - date: 2026-02-10
+    task_id: PR2-C5
+    status: done
+    summary: GroupFormViewでベース画像編集データを扱えるようにした。
+    completed:
+      - GroupFormViewでベース画像編集データを受け渡せるようにした
+    blockers: []
+    next_actions:
+      - PR2全体のレビュー対応へ進む
+    notes:
+      - Group固有の保存先設計はPR3で整理する
+
+  - date: 2026-02-27
+    task_id: PR2-REVIEW
+    status: done
+    summary: PR2レビュー指摘事項を反映した。
+    completed:
+      - 指摘事項を実装へ反映した
+      - 再レビュー可能な状態へ整理した
+    blockers: []
+    next_actions:
+      - PR3の永続化対応へ進む
+    notes:
+      - UI層の責務と保存層の責務を分離する方針を明確化した
+
+  - date: 2026-03-03
+    task_id: PR3-C1
+    status: done
+    summary: PhotoFormViewからPhotoImageへの編集データ保存処理を実装した。
+    completed:
+      - PhotoImageに編集データを保存する経路を追加した
+    blockers: []
+    next_actions:
+      - PhotoOnMap側の保存処理に進む
+    notes: []
+
+  - date: 2026-03-04
+    task_id: PR3-C2
+    status: done
+    summary: SpotFormViewからPhotoOnMapへの編集データ保存処理を実装した。
+    completed:
+      - Spot保存フローからPhotoOnMapへの保存を接続した
+    blockers: []
+    next_actions:
+      - Group側の保存処理へ進む
+    notes: []
+
+  - date: 2026-03-05
+    task_id: PR3-C3
+    status: done
+    summary: Group関連の編集データ保存処理を実装した。
+    completed:
+      - Groupベース画像編集データの保存経路を追加した
+    blockers: []
+    next_actions:
+      - 既存データのマイグレーション対応へ進む
+    notes: []
+
+  - date: 2026-03-05
+    task_id: PR3-C4
+    status: done
+    summary: 既存データのマイグレーション対応を進めた。
+    completed:
+      - 新しい編集データ構造との互換性を考慮した処理を追加した
+    blockers: []
+    next_actions:
+      - 読み込み・復元処理を実装する
+    notes:
+      - 旧データの読み込み安全性確認が重要
+
+  - date: 2026-03-06
+    task_id: PR3-C5
+    status: done
+    summary: 編集データの読み込み・復元処理を実装した。
+    completed:
+      - 保存済み編集データを再利用できるようにした
+      - 再編集フローの基本成立を確認した
+    blockers: []
+    next_actions:
+      - エラーハンドリングとテスト強化へ進む
+    notes: []
+
+  - date: 2026-03-06
+    task_id: PR3-C6
+    status: done
+    summary: 編集データ保存・復元まわりのエラーハンドリングを強化した。
+    completed:
+      - 異常系の基本処理を整理した
+    blockers: []
+    next_actions:
+      - 単体テスト追加へ進む
+    notes: []
+
+  - date: 2026-03-06
+    task_id: PR3-C7
+    status: done
+    summary: 保存・復元に関する単体テストを追加した。
+    completed:
+      - 主要フローのテストを追加した
+    blockers: []
+    next_actions:
+      - PR3全体のレビュー対応へ進む
+    notes:
+      - 異常系の追加テストは継続余地あり
+
+  - date: 2026-03-06
+    task_id: PR3-REVIEW
+    status: done
+    summary: PR3レビュー指摘事項を反映した。
+    completed:
+      - 永続化設計と実装の不整合を調整した
+    blockers: []
+    next_actions:
+      - PR4の表示対応へ進む
+    notes: []
+
+  - date: 2026-03-10
+    task_id: PR4-C1
+    status: doing
+    summary: サムネイル生成ロジックの実装を開始した。
+    completed:
+      - 基本的な生成フローの実装に着手した
+      - 編集済み画像データとの接続方針を整理した
+    blockers:
+      - キャッシュ方式が未確定
+    next_actions:
+      - 一覧表示側で使える生成結果を確認する
+      - パフォーマンス影響を見積もる
+    notes:
+      - 表示品質と生成コストのバランス検討が必要
+
+  - date: 2026-03-11
+    task_id: PR4-C1
+    status: doing
+    summary: サムネイル生成処理の接続と反映確認を継続した。
+    completed:
+      - 編集済み画像の反映確認を進めた
+    blockers:
+      - 大量画像時の処理負荷が未評価
+      - キャッシュ導入方針が未決定
+    next_actions:
+      - PR4-C1を完了条件まで詰める
+      - PR4-C2の一覧表示反映へ接続する
+    notes:
+      - PR4は表示整合性と性能の両面確認が必要
